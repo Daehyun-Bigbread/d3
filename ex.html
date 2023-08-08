@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+		<!-- Add your CSS styles here -->
+	</head>
+	<body>
+		<script type="module">
+			const data = {
+				id: "IT",
+				color: 10,
+				radius: 50,
+				children: [
+					{
+						id: "Software and Services",
+						color: 10,
+						radius: 8,
+						children: [
+							{
+								id: "Cloud Computing",
+								color: 10,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Cybersecurity",
+								color: 10,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Enterprise Software",
+								color: 10,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+					{
+						id: "Technical Hardware and Equipment",
+						color: 6,
+						radius: 8,
+						children: [
+							{
+								id: "Computer Hardware",
+								color: 6,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Networking Equipment",
+								color: 6,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Peripherals and Accessories",
+								color: 6,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+					{
+						id: "Semiconductors and Semiconductor Equipment",
+						color: 7,
+						radius: 8,
+						children: [
+							{
+								id: "Microprocessors",
+								color: 7,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Integrated Circuits",
+								color: 7,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Optoelectronics",
+								color: 7,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+					{
+						id: "Electronics and Electrical Appliances",
+						color: 8,
+						radius: 8,
+						children: [
+							{
+								id: "Consumer Electronics",
+								color: 8,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Home Appliances",
+								color: 8,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Power and Energy",
+								color: 8,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+					{
+						id: "Display",
+						color: 5,
+						radius: 8,
+						children: [
+							{
+								id: "LED Displays",
+								color: 5,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "LCD Displays",
+								color: 5,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "OLED Displays",
+								color: 5,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+					{
+						id: "Telecommunications",
+						color: 9,
+						radius: 8,
+						children: [
+							{
+								id: "Mobile Devices",
+								color: 9,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Networking and Infrastructure",
+								color: 9,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+					{
+						id: "Internet Services and Infrastructure",
+						color: 9,
+						radius: 8,
+						children: [
+							{
+								id: "Internet Service Providers",
+								color: 9,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Data Centers",
+								color: 9,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+					{
+						id: "Artificial Intelligence and Machine Learning",
+						color: 11,
+						radius: 8,
+						children: [
+							{
+								id: "Natural Language Processing",
+								color: 11,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Computer Vision",
+								color: 11,
+								radius: 8,
+								children: [],
+							},
+							{
+								id: "Robotics",
+								color: 11,
+								radius: 8,
+								children: [],
+							},
+						],
+					},
+				],
+			};
+
+			const width = 1000;
+			const height = 1000;
+
+			const svg = d3
+				.select("body")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			let root = d3.hierarchy(data);
+
+			function update(source) {
+				const treeLayout = d3.tree().size([width, height]);
+				treeLayout(root);
+
+				// Nodes update
+				const nodes = svg
+					.selectAll(".node")
+					.data(root.descendants(), (d) => d.data.id);
+
+				const nodeEnter = nodes
+					.enter()
+					.append("g")
+					.attr("class", "node")
+					.attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+					.on("click", function (d) {
+						if (d.children) {
+							d._children = d.children;
+							d.children = null;
+						} else {
+							d.children = d._children;
+							d._children = null;
+						}
+						update(d);
+					});
+
+				nodeEnter
+					.append("circle")
+					.attr("r", (d) => d.data.radius)
+					.style("fill", (d) => d.data.color);
+
+				nodeEnter
+					.append("text")
+					.attr("dy", ".35em")
+					.attr("y", (d) => (d.children ? -20 : 20))
+					.style("text-anchor", "middle")
+					.text((d) => d.data.id);
+
+				nodes.exit().remove();
+
+				// Links update
+				const links = svg
+					.selectAll(".link")
+					.data(root.links(), (d) => d.target.data.id);
+
+				links
+					.enter()
+					.append("path")
+					.attr("class", "link")
+					.attr(
+						"d",
+						d3
+							.linkVertical()
+							.x((d) => d.x)
+							.y((d) => d.y)
+					);
+
+				links.exit().remove();
+			}
+
+			// Start the visualization
+			update(data);
+			function hideAllExceptIT(node) {
+				if (node.name !== "IT" && node.children) {
+					node._children = node.children;
+					node.children = null;
+				}
+				if (node.children) {
+					node.children.forEach(hideAllExceptIT);
+				}
+			}
+			hideAllExceptIT(data);
+		</script>
+	</body>
+</html>

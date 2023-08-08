@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+		<style>
+			.links line {
+				stroke: #999;
+				stroke-opacity: 0.6;
+			}
+
+			.nodes circle {
+				stroke: #fff;
+				stroke-width: 1.5px;
+			}
+
+			text {
+				font-family: sans-serif;
+				font-size: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<svg class="network-graph"></svg>
+
+		<script>
+			// Create a zoom behavior
+			const zoom = d3
+				.zoom()
+				.scaleExtent([0.1, 10]) // Set the zoom scale range
+				.on("zoom", (event) => {
+					const { transform } = event;
+					// Apply the zoom transform to the 'g' element containing links and nodes
+					svg.attr("transform", transform);
+				});
+
+			// Specify the dimensions of the chart.
+			const width = 928;
+			const height = 680;
+
+			const colorScale = d3
+				.scaleLinear()
+				.domain([-10, 0, 10])
+				.range(["red", "white", "blue"]);
+
+			// Graph data
+			const data = {
+				nodes: [
+					{
+						id: "IT",
+						color: 10,
+						radius: 50,
+					},
+					{
+						id: "Software and Services",
+						color: 10,
+						radius: 8,
+					},
+					{
+						id: "Technical Hardware and Equipment",
+						color: 6,
+						radius: 8,
+					},
+					{
+						id: "Semiconductors and Semiconductor Equipment",
+						color: 7,
+						radius: 8,
+					},
+					{
+						id: "Electronics and Electrical Appliances",
+						color: 8,
+						radius: 8,
+					},
+					{
+						id: "Display",
+						color: 5,
+						radius: 8,
+					},
+					{
+						id: "Telecommunications",
+						color: 9,
+						radius: 8,
+					},
+					{
+						id: "Internet Services and Infrastructure",
+						color: 9,
+						radius: 8,
+					},
+					{
+						id: "Artificial Intelligence and Machine Learning",
+						color: 11,
+						radius: 8,
+					},
+					{
+						id: "Cloud Computing",
+						color: 10,
+						radius: 8,
+					},
+					{
+						id: "Cybersecurity",
+						color: 10,
+						radius: 8,
+					},
+					{
+						id: "Enterprise Software",
+						color: 10,
+						radius: 8,
+					},
+					{
+						id: "Computer Hardware",
+						color: 6,
+						radius: 8,
+					},
+					{
+						id: "Networking Equipment",
+						color: 6,
+						radius: 8,
+					},
+					{
+						id: "Peripherals and Accessories",
+						color: 6,
+						radius: 8,
+					},
+					{
+						id: "Microprocessors",
+						color: 7,
+						radius: 8,
+					},
+					{
+						id: "Integrated Circuits",
+						color: 7,
+						radius: 8,
+					},
+					{
+						id: "Optoelectronics",
+						color: 7,
+						radius: 8,
+					},
+					{
+						id: "Consumer Electronics",
+						color: 8,
+						radius: 8,
+					},
+					{
+						id: "Home Appliances",
+						color: 8,
+						radius: 8,
+					},
+					{
+						id: "Power and Energy",
+						color: 8,
+						radius: 8,
+					},
+					{
+						id: "LED Displays",
+						color: 5,
+						radius: 8,
+					},
+					{
+						id: "LCD Displays",
+						color: 5,
+						radius: 8,
+					},
+					{
+						id: "OLED Displays",
+						color: 5,
+						radius: 8,
+					},
+					{
+						id: "Mobile Devices",
+						color: 9,
+						radius: 8,
+					},
+					{
+						id: "Networking and Infrastructure",
+						color: 9,
+						radius: 8,
+					},
+					{
+						id: "Internet Service Providers",
+						color: 9,
+						radius: 8,
+					},
+					{
+						id: "Data Centers",
+						color: 9,
+						radius: 8,
+					},
+					{
+						id: "Natural Language Processing",
+						color: 11,
+						radius: 8,
+					},
+					{
+						id: "Computer Vision",
+						color: 11,
+						radius: 8,
+					},
+					{
+						id: "Robotics",
+						color: 11,
+						radius: 8,
+					},
+				],
+				links: [
+					{
+						source: "IT",
+						target: "Software and Services",
+					},
+					{
+						source: "IT",
+						target: "Technical Hardware and Equipment",
+					},
+					{
+						source: "IT",
+						target: "Semiconductors and Semiconductor Equipment",
+					},
+					{
+						source: "IT",
+						target: "Electronics and Electrical Appliances",
+					},
+					{
+						source: "IT",
+						target: "Display",
+					},
+					{
+						source: "IT",
+						target: "Telecommunications",
+					},
+					{
+						source: "IT",
+						target: "Internet Services and Infrastructure",
+					},
+					{
+						source: "IT",
+						target: "Artificial Intelligence and Machine Learning",
+					},
+					{
+						source: "Software and Services",
+						target: "Cloud Computing",
+					},
+					{
+						source: "Software and Services",
+						target: "Cybersecurity",
+					},
+					{
+						source: "Software and Services",
+						target: "Enterprise Software",
+					},
+					{
+						source: "Technical Hardware and Equipment",
+						target: "Computer Hardware",
+					},
+					{
+						source: "Technical Hardware and Equipment",
+						target: "Networking Equipment",
+					},
+					{
+						source: "Technical Hardware and Equipment",
+						target: "Peripherals and Accessories",
+					},
+					{
+						source: "Semiconductors and Semiconductor Equipment",
+						target: "Microprocessors",
+					},
+					{
+						source: "Semiconductors and Semiconductor Equipment",
+						target: "Integrated Circuits",
+					},
+					{
+						source: "Semiconductors and Semiconductor Equipment",
+						target: "Optoelectronics",
+					},
+					{
+						source: "Electronics and Electrical Appliances",
+						target: "Consumer Electronics",
+					},
+					{
+						source: "Electronics and Electrical Appliances",
+						target: "Home Appliances",
+					},
+					{
+						source: "Electronics and Electrical Appliances",
+						target: "Power and Energy",
+					},
+					{
+						source: "Display",
+						target: "LED Displays",
+					},
+					{
+						source: "Display",
+						target: "LCD Displays",
+					},
+					{
+						source: "Display",
+						target: "OLED Displays",
+					},
+					{
+						source: "Telecommunications",
+						target: "Mobile Devices",
+					},
+					{
+						source: "Telecommunications",
+						target: "Networking and Infrastructure",
+					},
+					{
+						source: "Internet Services and Infrastructure",
+						target: "Internet Service Providers",
+					},
+					{
+						source: "Internet Services and Infrastructure",
+						target: "Data Centers",
+					},
+					{
+						source: "Artificial Intelligence and Machine Learning",
+						target: "Natural Language Processing",
+					},
+					{
+						source: "Artificial Intelligence and Machine Learning",
+						target: "Computer Vision",
+					},
+					{
+						source: "Artificial Intelligence and Machine Learning",
+						target: "Robotics",
+					},
+				],
+			};
+
+			// 노드들의 자식 노드를 찾아서 children에 넣어줌
+			data.nodes.forEach((node) => {
+				node.children = data.links
+					.filter((link) => link.source === node.id)
+					.map((link) => link.target);
+			});
+
+			const links = data.links.map((d) => ({ ...d }));
+			const nodes = data.nodes.map((d) => ({ ...d }));
+
+			const simulation = d3
+				.forceSimulation(nodes)
+				.force(
+					"link",
+					d3.forceLink(links).id((d) => d.id)
+				)
+				.force("charge", d3.forceManyBody().strength(-400))
+				.force("x", d3.forceX())
+				.force("y", d3.forceY());
+
+			// Create the SVG container.
+			const svg = d3
+				.select(".network-graph")
+				.attr("width", width)
+				.attr("height", height)
+				.attr("viewBox", [-width / 2, -height / 2, width, height])
+				.attr("style", "max-width: 100%; height: auto;")
+				.call(zoom);
+
+			// Add a line for each link, and a circle for each node.
+			const link = svg
+				.append("g")
+				.attr("class", "links")
+				.attr("stroke", "#999")
+				.attr("stroke-opacity", 0.6)
+				.selectAll("line")
+				.data(links)
+				.join("line");
+			// .attr("stroke-width", (d) => Math.sqrt(d.value));
+			// 선의 굵기
+
+			const node = svg
+				.append("g")
+				.attr("class", "nodes")
+				.attr("stroke", "#fff")
+				.attr("stroke-width", 1.5)
+				.selectAll("g")
+				.data(nodes)
+				.join("g");
+
+			node.append("circle")
+				.attr("r", (d) => d.radius)
+				.attr("fill", (d) => colorScale(d.color));
+
+			const text = node
+				.append("text")
+				.attr("text-anchor", "middle")
+				// .attr("dx", 0)
+				.attr("dy", 0)
+				.text((d) => d.id)
+				.lower()
+				.attr("font-size", 7)
+				.attr("fill", "black")
+				.attr("stroke", "none")
+				.raise();
+
+			node.append("title").text((d) => d.id);
+
+			// Add a drag behavior.
+			node.call(
+				d3
+					.drag()
+					.on("start", dragstarted)
+					.on("drag", dragged)
+					.on("end", dragended)
+			);
+
+			// Set the position attributes of links and nodes each time the simulation ticks.
+			simulation.on("tick", () => {
+				node.attr("transform", (d) => `translate(${d.x},${d.y})`);
+
+				link.attr("x1", (d) => d.source.x)
+					.attr("y1", (d) => d.source.y)
+					.attr("x2", (d) => d.target.x)
+					.attr("y2", (d) => d.target.y);
+			});
+
+			////////////////////////////////////////////////////////////////////////////////////////////
+			// DRAG EVENT
+			////////////////////////////////////////////////////////////////////////////////////////////
+			// Reheat the simulation when drag starts, and fix the subject position.
+			function dragstarted(event) {
+				if (!event.active) simulation.alphaTarget(0.3).restart();
+				event.subject.fx = event.subject.x;
+				event.subject.fy = event.subject.y;
+			}
+
+			// Update the subject (dragged node) position during drag.
+			function dragged(event) {
+				event.subject.fx = event.x;
+				event.subject.fy = event.y;
+			}
+
+			// Restore the target alpha so the simulation cools after dragging ends.
+			// Unfix the subject position now that it’s no longer being dragged.
+			function dragended(event) {
+				if (!event.active) simulation.alphaTarget(0);
+				event.subject.fx = null;
+				event.subject.fy = null;
+			}
+		</script>
+	</body>
+</html>

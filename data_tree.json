@@ -1,0 +1,195 @@
+{
+	"id": "IT",
+	"color": 10,
+	"radius": 50,
+	"children": [
+		{
+			"id": "Software and Services",
+			"color": 10,
+			"radius": 8,
+			"children": [
+				{
+					"id": "Cloud Computing",
+					"color": 10,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Cybersecurity",
+					"color": 10,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Enterprise Software",
+					"color": 10,
+					"radius": 8,
+					"children": []
+				}
+			]
+		},
+		{
+			"id": "Technical Hardware and Equipment",
+			"color": 6,
+			"radius": 8,
+			"children": [
+				{
+					"id": "Computer Hardware",
+					"color": 6,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Networking Equipment",
+					"color": 6,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Peripherals and Accessories",
+					"color": 6,
+					"radius": 8,
+					"children": []
+				}
+			]
+		},
+		{
+			"id": "Semiconductors and Semiconductor Equipment",
+			"color": 7,
+			"radius": 8,
+			"children": [
+				{
+					"id": "Microprocessors",
+					"color": 7,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Integrated Circuits",
+					"color": 7,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Optoelectronics",
+					"color": 7,
+					"radius": 8,
+					"children": []
+				}
+			]
+		},
+		{
+			"id": "Electronics and Electrical Appliances",
+			"color": 8,
+			"radius": 8,
+			"children": [
+				{
+					"id": "Consumer Electronics",
+					"color": 8,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Home Appliances",
+					"color": 8,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Power and Energy",
+					"color": 8,
+					"radius": 8,
+					"children": []
+				}
+			]
+		},
+		{
+			"id": "Display",
+			"color": 5,
+			"radius": 8,
+			"children": [
+				{
+					"id": "LED Displays",
+					"color": 5,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "LCD Displays",
+					"color": 5,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "OLED Displays",
+					"color": 5,
+					"radius": 8,
+					"children": []
+				}
+			]
+		},
+		{
+			"id": "Telecommunications",
+			"color": 9,
+			"radius": 8,
+			"children": [
+				{
+					"id": "Mobile Devices",
+					"color": 9,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Networking and Infrastructure",
+					"color": 9,
+					"radius": 8,
+					"children": []
+				}
+			]
+		},
+		{
+			"id": "Internet Services and Infrastructure",
+			"color": 9,
+			"radius": 8,
+			"children": [
+				{
+					"id": "Internet Service Providers",
+					"color": 9,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Data Centers",
+					"color": 9,
+					"radius": 8,
+					"children": []
+				}
+			]
+		},
+		{
+			"id": "Artificial Intelligence and Machine Learning",
+			"color": 11,
+			"radius": 8,
+			"children": [
+				{
+					"id": "Natural Language Processing",
+					"color": 11,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Computer Vision",
+					"color": 11,
+					"radius": 8,
+					"children": []
+				},
+				{
+					"id": "Robotics",
+					"color": 11,
+					"radius": 8,
+					"children": []
+				}
+			]
+		}
+	]
+}
