@@ -30,7 +30,8 @@
 				.on("zoom", (event) => {
 					const { transform } = event;
 					// Apply the zoom transform to the 'g' element containing links and nodes
-					svg.attr("transform", transform);
+					d3.select(".nodes").attr("transform", transform);
+					d3.select(".links").attr("transform", transform);
 				});
 
 			// Specify the dimensions of the chart.
@@ -327,9 +328,11 @@
 
 			// 노드들의 자식 노드를 찾아서 children에 넣어줌
 			data.nodes.forEach((node) => {
-				node.children = data.links
+				node._children = data.links
 					.filter((link) => link.source === node.id)
-					.map((link) => link.target);
+					.map((link) =>
+						data.nodes.find((n) => n.id === link.target)
+					); // Find the corresponding node object
 			});
 
 			const links = data.links.map((d) => ({ ...d }));
@@ -341,7 +344,7 @@
 					"link",
 					d3.forceLink(links).id((d) => d.id)
 				)
-				.force("charge", d3.forceManyBody().strength(-400))
+				.force("charge", d3.forceManyBody().strength(-600))
 				.force("x", d3.forceX())
 				.force("y", d3.forceY());
 
@@ -362,7 +365,8 @@
 				.attr("stroke-opacity", 0.6)
 				.selectAll("line")
 				.data(links)
-				.join("line");
+				.join("line")
+				.attr("display", (d) => (d.target.id !== "IT" ? "" : ""));
 			// .attr("stroke-width", (d) => Math.sqrt(d.value));
 			// 선의 굵기
 
@@ -373,17 +377,34 @@
 				.attr("stroke-width", 1.5)
 				.selectAll("g")
 				.data(nodes)
-				.join("g");
+				.join("g")
+				.attr("display", (d) => (d.id !== "IT" ? "" : ""))
+				.on("click", (event, d) => {
+					const childNodes = d._children.map((child) => child.id);
+					console.log(childNodes);
+					// const totalNodes = svg
+					// 	.select(".nodes")
+					// 	.selectAll("g")
+					// 	.each(function (d) {
+					// 		if (childNodes.includes(d.id)) {
+					// 			this.attributes.display.value == "none"
+					// 				? (this.attributes.display.value = "block")
+					// 				: (this.attributes.display.value = "none");
+					// 		}
+					// 	});
+				});
 
-			node.append("circle")
+			const circle = node
+				.append("circle")
 				.attr("r", (d) => d.radius)
-				.attr("fill", (d) => colorScale(d.color));
+				.attr("fill", (d) => colorScale(d.color))
+				.attr("cursor", "pointer");
 
 			const text = node
 				.append("text")
 				.attr("text-anchor", "middle")
 				// .attr("dx", 0)
-				.attr("dy", 0)
+				.attr("dy", "-12")
 				.text((d) => d.id)
 				.lower()
 				.attr("font-size", 7)
@@ -391,7 +412,7 @@
 				.attr("stroke", "none")
 				.raise();
 
-			node.append("title").text((d) => d.id);
+			circle.append("title").text((d) => d.id);
 
 			// Add a drag behavior.
 			node.call(
